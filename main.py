@@ -703,8 +703,10 @@ class MenuBar(Menu):
                     self.task_display.add_activity(task, prio, color, tags, deadline)
             
                 messagebox.showinfo("Load", "File loaded successfully!")
+        except EOFError:
+            messagebox.showerror("Load", "File is empty.")
         except FileNotFoundError:
-            messagebox.showinfo("Load", "File not found.")
+            messagebox.showerror("Load", "File not found.")
         except Exception as e:
             messagebox.showerror("Error", f"Failed to load tasks: {str(e)}")
 

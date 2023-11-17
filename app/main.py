@@ -430,10 +430,10 @@ class TaskDisplay(Frame, Date):
         self.canvas = Canvas(self, width=352, height=500, background="#faf5ef", highlightthickness=0)
         self.canvas.pack(side=LEFT, fill=BOTH, expand=True, padx=(15, 0))
 
-        scrollbar = Scrollbar(self, orient=VERTICAL, command=self.canvas.yview)
-        scrollbar.pack(side=RIGHT, fill=Y)
+        self.scrollbar = Scrollbar(self, orient=VERTICAL, command=self.canvas.yview)
+        self.scrollbar.pack(side=RIGHT, fill=Y)
 
-        self.canvas.configure(yscrollcommand=scrollbar.set, background="#faf5ef")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set, background="#faf5ef")
         self.canvas.bind("<Configure>", self.update_scrollwheel)
 
         self.task_list_frame_inner = Frame(self.canvas, background="#faf5ef")
@@ -527,9 +527,9 @@ class TaskDisplay(Frame, Date):
         self.update_scrollwheel()
 
     def complete_activity(self, frame):
-        frame.grid_forget()
         self.completed.append(frame)
         self.activities.remove(frame)
+        frame.grid_forget()
         self.task_list_frame_inner.configure(background="#faf5ef")
         self.arrange_activities()
         self.update_scrollwheel()
@@ -666,12 +666,15 @@ class MenuBar(Menu):
             self.clear_tasks()
 
     def clear_tasks(self):
+        for task in self.task_display.activities:
+            self.task_display.complete_activity(task)
         self.task_display.activities.clear()
         self.task_display.completed.clear()
         self.task_display.task_list_frame_inner.destroy()
         self.task_display.task_list_frame_inner = Frame(self.task_display.canvas)
         self.task_display.task_list_frame_inner.pack(fill=BOTH, expand=True)
         self.task_display.canvas.create_window((0, 0), window=self.task_display.task_list_frame_inner, anchor=NW)
+        self.task_display.update_scrollwheel()
 
     def load_tasks(self):
         try:

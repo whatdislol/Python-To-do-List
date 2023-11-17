@@ -6,7 +6,7 @@ from datetime import datetime
 from abc import ABC, abstractmethod
 try:
     from tkcalendar import Calendar
-except:
+except ImportError:
     warning = "In order to use the set deadline button, install tkcalendar by typing \"pip install tkcalendar\" in your terminal."
     print(warning)
     messagebox.showwarning("Warning", warning) 

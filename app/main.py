@@ -666,8 +666,7 @@ class MenuBar(Menu):
             self.clear_tasks()
 
     def clear_tasks(self):
-        for task in self.task_display.activities:
-            self.task_display.complete_activity(task)
+        self.task_display.canvas.delete("all")
         self.task_display.activities.clear()
         self.task_display.completed.clear()
         self.task_display.task_list_frame_inner.destroy()

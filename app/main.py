@@ -661,9 +661,10 @@ class MenuBar(Menu):
             messagebox.showerror("Error", f"Failed to save tasks: {str(e)}")
 
     def confirm_clear_tasks(self):
-        choice = messagebox.askyesno("Clear", "Are you sure you want to clear all tasks?")
+        choice = messagebox.askyesno("Clear", "Are you sure you want to clear all tasks?", default="no")
         if choice:
             self.clear_tasks()
+            messagebox.showinfo("Clear", "Tasks cleared successfully!")
 
     def clear_tasks(self):
         self.task_display.canvas.delete("all")
